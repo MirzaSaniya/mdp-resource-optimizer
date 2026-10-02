@@ -1,56 +1,95 @@
-# Dynamic Resource Allocation with Markov Decision Processes
+# Mdp Resource Optimizer
 
-A portfolio project that models cloud compute scaling as a **Markov Decision Process (MDP)**. The agent balances service quality against infrastructure cost while deciding whether to scale up, maintain capacity, or scale down.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/) [![Tests](https://img.shields.io/badge/tests-passing-2E7D32)](#testing) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## Why this project matters
+> Optimize dynamic compute capacity with Markov Decision Processes, value iteration, and policy iteration.
 
-Static autoscaling rules can be brittle. This project turns resource allocation into a sequential decision problem where today's action affects tomorrow's state and cost.
+## Why this project exists
 
-## AI formulation
+A cloud service must decide when to scale compute capacity up, down, or maintain capacity while balancing operating cost and overload risk.
 
-- **State:** workload level and current capacity
-- **Actions:** scale up, maintain, scale down
-- **Transition:** probabilistic workload movement plus capacity changes
-- **Reward:** low cost when capacity matches demand, penalties for overload and unnecessary capacity
-- **Objective:** maximize expected discounted long-term reward
+The implementation is intentionally small and reproducible so the underlying AI reasoning is easy to inspect, benchmark, and discuss.
 
-## Algorithms
+## AI concepts demonstrated
 
-1. Value Iteration
-2. Policy Iteration
-3. Convergence and policy comparison
+MDP state design, stochastic transitions, reward functions, Bellman optimality, value iteration, policy iteration
 
-## Example output
+## Architecture
 
-The demo prints the learned action policy across workload/capacity states and reports the final value function. This makes the connection between the mathematical MDP and an operational scaling policy explicit.
-
-## Run
-
-```bash
-python examples/demo.py
+```mermaid
+flowchart LR
+    A[Workload + capacity state] --> B[Transition model]
+    B --> C[Reward model]
+    C --> D[Value iteration]
+    C --> E[Policy iteration]
+    D --> F[Capacity policy]
+    E --> F
 ```
 
-## Tests
+## Results
 
-```bash
-pytest -q
+The supplied demo produces the same optimal policy with both solvers on the configured 4x4 state space.
+
+| Solver | Policy agreement |
+|---|---|
+| Value Iteration | Baseline |
+| Policy Iteration | Matches value-iteration policy |
+
+## Project structure
+
+```text
+mdp-resource-optimizer/
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── examples/
+│   └── demo.py
+├── src/
+│   └── implementation
+└── tests/
+    └── test_*.py
 ```
 
-## Portfolio talking points
+## Run locally
 
-- Why sequential decisions are better modeled with an MDP than a one-shot classifier
-- How discount factor changes short-term vs. long-term behavior
-- How reward design encodes operational tradeoffs
-- Why policy iteration and value iteration can converge differently
+```bash
+python -m venv .venv
+# macOS/Linux
+source .venv/bin/activate
+# Windows PowerShell
+# .venv\Scripts\Activate.ps1
 
-## CS221 connection
+pip install -r requirements.txt
+PYTHONPATH=. python examples/demo.py
+```
 
-Inspired by classical AI concepts commonly covered in CS221: Markov decision processes, dynamic programming, and sequential decision-making. The application framing, implementation, experiments, and documentation are independently developed.
+## Testing
+
+```bash
+PYTHONPATH=. pytest -q
+```
+
+## Ideas for extending the project
+
+- Scale the environment or dataset and compare runtime and search behavior.
+- Add richer visualizations or an interactive interface.
+- Introduce additional baselines and ablation experiments.
+- Add configuration files so experiments are reproducible from the command line.
+
+## Portfolio note
+
+This project is independently structured and documented as a portfolio implementation inspired by AI concepts studied in CS221. Do not publish course-provided starter code, solutions, tests, or restricted materials.
 
 ## GitHub metadata
 
-**Repository name:** `mdp-resource-optimizer`
+**Repository name**
 
-**Description:** Optimize dynamic compute capacity with Markov Decision Processes, value iteration, and policy iteration.
+`mdp-resource-optimizer`
 
-**Topics:** `artificial-intelligence` `mdp` `markov-decision-processes` `value-iteration` `policy-iteration` `reinforcement-learning` `python` `cs221`
+**Description**
+
+`Optimize dynamic compute capacity with Markov Decision Processes, value iteration, and policy iteration.`
+
+**Topics**
+
+`artificial-intelligence` `mdp` `markov-decision-processes` `value-iteration` `policy-iteration` `reinforcement-learning` `python` `cs221`
